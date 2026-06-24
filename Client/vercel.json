@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://real-estate-dev-weekends-nbbz.vercel.app/"
+      "destination": "https://real-estate-dev-weekends-dwxp-9u0d0v3n5.vercel.app/api/:path*"
     }
   ]
 }
