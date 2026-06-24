@@ -9,15 +9,6 @@ import cors from 'cors';
 
 dotenv.config();
 
-mongoose
-  .connect(process.env.MONGO)
-  .then(() => {
-    console.log('Connected to MongoDB!');
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
 const app = express();
 
 app.use(cors({
@@ -26,6 +17,24 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser());
+
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) return;
+  await mongoose.connect(process.env.MONGO);
+  isConnected = true;
+  console.log('Connected to MongoDB!');
+};
+
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
